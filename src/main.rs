@@ -1,48 +1,62 @@
-use std::{cmp::Ordering, io};
-//use std::cmp::Ordering;
+use std::io;
 
-fn fibonacci(n: u64) -> usize {
-    match n.cmp(&2) {
-        Ordering::Less => 1,
-        Ordering::Equal => 1,
-        Ordering::Greater => fibonacci(n - 1) + fibonacci(n - 2),
+// Function to calculate the Fibonacci sequence up to the nth number
+fn fibonacci(n: u128) -> Vec<u128> {
+    // Create a vector to store the Fibonacci sequence
+    let mut fib_sequence = vec![0; n as usize];
+    
+    // The first two numbers in the sequence are 1
+    fib_sequence[0] = 1;
+    fib_sequence[1] = 1;
+
+    // Calculate the Fibonacci numbers iteratively
+    for i in 2..n as usize {
+        fib_sequence[i] = fib_sequence[i - 1] + fib_sequence[i - 2];
     }
+
+    fib_sequence // Return the vector containing the Fibonacci sequence
 }
 
 fn main() {
     println!("------------------------------------");
     println!("Welcome to the Fibonacci calculator");
+
     loop {
         println!("------------------------------------");
-        println!("Put number for nth Fibonacci number:");
-        let mut n = String::new();
-        
+        println!("Enter the number for nth Fibonacci number (or 'q' to quit):");
+
+        // Read user input from the console
+        let mut input = String::new();
         io::stdin()
-            .read_line(&mut n)
-            .expect("Faild to read line");
-        let n = n.trim();
-        match n {
+            .read_line(&mut input)
+            .expect("Failed to read line");
+        let input = input.trim();
+
+        match input {
             "q" => {
                 println!("See you later..");
-                return;
+                break; // Exit the loop if 'q' is entered
             }
             _ => {
-                let n: u64 = match n.parse() {
+                let n: u128 = match input.parse() {
                     Ok(num) => num,
                     Err(_) => {
-                        println!("Please put a valid number");
+                        println!("Please enter a valid number");
                         continue; // Continue to the next iteration of the loop
                     }
                 };
 
-                let fib = fibonacci(n);
+                // Calculate the Fibonacci sequence up to the nth number
+                let fib_sequence = fibonacci(n);
 
-                for i in 1..=n {
-                    print!("{} ", fibonacci(i));
+                // Print the Fibonacci sequence and the nth Fibonacci number
+                println!("The Fibonacci sequence up to the {}th number is:", n);
+                for &num in &fib_sequence {
+                    print!("{} ", num);
                 }
-                println!("\nThe nth Fibonacci number is {}", fib);
-                println!("Press 'q' to finish\n");
+                println!("\n\nThe {}th Fibonacci number is {}", n, fib_sequence[n as usize - 1]);
             }
         }
     }
 }
+
