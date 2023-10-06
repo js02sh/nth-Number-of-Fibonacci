@@ -8,7 +8,6 @@ fn fibonacci(n: u128) -> Vec<u128> {
     // The first two numbers in the sequence are 1
     fib_sequence[0] = 1;
     fib_sequence[1] = 1;
-
     // Calculate the Fibonacci numbers iteratively
     for i in 2..n as usize {
         fib_sequence[i] = fib_sequence[i - 1] + fib_sequence[i - 2];
